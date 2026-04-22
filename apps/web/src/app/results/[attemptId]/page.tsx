@@ -76,6 +76,12 @@ export default function ResultPage() {
 							Start Another Attempt
 						</Link>
 						<Link
+							href={`/reflection/${attempt.attemptId}`}
+							className={cn(buttonVariants({ variant: "outline" }))}
+						>
+							Open Reflection
+						</Link>
+						<Link
 							href="/responses"
 							className={cn(buttonVariants({ variant: "outline" }))}
 						>

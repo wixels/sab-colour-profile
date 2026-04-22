@@ -11,6 +11,7 @@
 import type * as attempts from "../attempts.js";
 import type * as healthCheck from "../healthCheck.js";
 import type * as people from "../people.js";
+import type * as postAssessments from "../postAssessments.js";
 import type * as questions from "../questions.js";
 import type * as reporting from "../reporting.js";
 
@@ -24,6 +25,7 @@ declare const fullApi: ApiFromModules<{
   attempts: typeof attempts;
   healthCheck: typeof healthCheck;
   people: typeof people;
+  postAssessments: typeof postAssessments;
   questions: typeof questions;
   reporting: typeof reporting;
 }>;

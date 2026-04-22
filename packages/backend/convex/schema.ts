@@ -8,6 +8,48 @@ const assessmentColor = v.union(
 	v.literal("yellow"),
 );
 
+const postAssessmentNode = v.union(
+	v.object({
+		id: v.string(),
+		parentId: v.optional(v.string()),
+		kind: v.literal("section"),
+		title: v.string(),
+		description: v.optional(v.string()),
+		sortOrder: v.number(),
+	}),
+	v.object({
+		id: v.string(),
+		parentId: v.optional(v.string()),
+		kind: v.literal("question"),
+		label: v.string(),
+		helpText: v.optional(v.string()),
+		answerType: v.union(
+			v.literal("short_text"),
+			v.literal("textarea"),
+			v.literal("radio"),
+		),
+		required: v.boolean(),
+		autoFill: v.optional(
+			v.union(
+				v.literal("name"),
+				v.literal("role"),
+				v.literal("dominant_color"),
+				v.literal("secondary_color"),
+			),
+		),
+		options: v.optional(
+			v.array(
+				v.object({
+					id: v.string(),
+					label: v.string(),
+					colorHint: v.optional(assessmentColor),
+				}),
+			),
+		),
+		sortOrder: v.number(),
+	}),
+);
+
 export default defineSchema({
 	questions: defineTable({
 		order: v.number(),
@@ -49,4 +91,27 @@ export default defineSchema({
 		}),
 		completedAt: v.number(),
 	}).index("by_personId_and_completedAt", ["personId", "completedAt"]),
+	postAssessmentDefinitions: defineTable({
+		key: v.string(),
+		title: v.string(),
+		version: v.number(),
+		isActive: v.boolean(),
+		nodes: v.array(postAssessmentNode),
+	})
+		.index("by_key", ["key"])
+		.index("by_isActive_and_key", ["isActive", "key"]),
+	postAssessmentResponses: defineTable({
+		definitionId: v.id("postAssessmentDefinitions"),
+		personId: v.id("people"),
+		attemptId: v.id("attempts"),
+		answers: v.array(
+			v.object({
+				questionId: v.string(),
+				value: v.string(),
+			}),
+		),
+		submittedAt: v.number(),
+	})
+		.index("by_personId_and_submittedAt", ["personId", "submittedAt"])
+		.index("by_attemptId_and_definitionId", ["attemptId", "definitionId"]),
 });

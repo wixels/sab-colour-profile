@@ -27,6 +27,15 @@ const storedAnswerValidator = v.object({
 	color: colorValidator,
 });
 
+const attemptListItemValidator = v.object({
+	attemptId: v.id("attempts"),
+	personId: v.id("people"),
+	completedAt: v.number(),
+	scores: scoreValidator,
+	primaryColor: colorValidator,
+	secondaryColor: colorValidator,
+});
+
 export const submit = mutation({
 	args: {
 		personId: v.id("people"),
@@ -157,5 +166,36 @@ export const getById = query({
 			answers: attempt.answers,
 			scores: attempt.scores,
 		};
+	},
+});
+
+export const listByPerson = query({
+	args: {
+		personId: v.id("people"),
+	},
+	returns: v.array(attemptListItemValidator),
+	handler: async (ctx, args) => {
+		const attempts = await ctx.db
+			.query("attempts")
+			.withIndex("by_personId_and_completedAt", (q) =>
+				q.eq("personId", args.personId),
+			)
+			.order("desc")
+			.take(200);
+
+		return attempts.map((attempt) => {
+			const orderedColors = Object.entries(attempt.scores)
+				.sort(([, leftScore], [, rightScore]) => rightScore - leftScore)
+				.map(([color]) => color as "red" | "green" | "blue" | "yellow");
+
+			return {
+				attemptId: attempt._id,
+				personId: attempt.personId,
+				completedAt: attempt.completedAt,
+				scores: attempt.scores,
+				primaryColor: orderedColors[0] ?? "red",
+				secondaryColor: orderedColors[1] ?? "green",
+			};
+		});
 	},
 });

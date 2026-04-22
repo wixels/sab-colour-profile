@@ -1,0 +1,255 @@
+{
+	"definitions": [
+		{
+			"key": "reflection",
+			"title": "Reflection",
+			"version": 1,
+			"isActive": true,
+			"nodes": [
+				{
+					"id": "core_name",
+					"kind": "question",
+					"label": "Name",
+					"answerType": "short_text",
+					"required": true,
+					"autoFill": "name",
+					"sortOrder": 1
+				},
+				{
+					"id": "core_role",
+					"kind": "question",
+					"label": "Role",
+					"answerType": "short_text",
+					"required": true,
+					"autoFill": "role",
+					"sortOrder": 2
+				},
+				{
+					"id": "core_dominant",
+					"kind": "question",
+					"label": "Dominant colour",
+					"answerType": "short_text",
+					"required": true,
+					"autoFill": "dominant_color",
+					"sortOrder": 3
+				},
+				{
+					"id": "core_secondary",
+					"kind": "question",
+					"label": "Secondary colour",
+					"answerType": "short_text",
+					"required": true,
+					"autoFill": "secondary_color",
+					"sortOrder": 4
+				},
+				{
+					"id": "section_showing_up",
+					"kind": "section",
+					"title": "Showing Up",
+					"sortOrder": 100
+				},
+				{
+					"id": "showing_up_best",
+					"parentId": "section_showing_up",
+					"kind": "question",
+					"label": "1. When I am at my best, others experience me as:",
+					"answerType": "textarea",
+					"required": true,
+					"sortOrder": 110
+				},
+				{
+					"id": "showing_up_pressure",
+					"parentId": "section_showing_up",
+					"kind": "question",
+					"label": "2. When I am under pressure, others experience me as:",
+					"answerType": "textarea",
+					"required": true,
+					"sortOrder": 120
+				},
+				{
+					"id": "showing_up_frustrates",
+					"parentId": "section_showing_up",
+					"kind": "question",
+					"label": "3. The behaviour I do that frustrates others most:",
+					"answerType": "textarea",
+					"required": true,
+					"sortOrder": 130
+				},
+				{
+					"id": "section_impact_key_situations",
+					"kind": "section",
+					"title": "MY IMPACT IN KEY SITUATIONS",
+					"sortOrder": 200
+				},
+				{
+					"id": "impact_meetings_radio",
+					"parentId": "section_impact_key_situations",
+					"kind": "question",
+					"label": "1.1 - In Meetings, I tend to:",
+					"answerType": "radio",
+					"required": true,
+					"options": [
+						{
+							"id": "meetings_red",
+							"label": "Speak Too Quickly / Dominate (Red)",
+							"colorHint": "red"
+						},
+						{
+							"id": "meetings_yellow",
+							"label": "Speak A lot / Go Off Track (Yellow)",
+							"colorHint": "yellow"
+						},
+						{
+							"id": "meetings_green",
+							"label": "Hold Back / Stay Quiet (Green)",
+							"colorHint": "green"
+						},
+						{
+							"id": "meetings_blue",
+							"label": "Over Analyse / Slow Things Down (Blue)",
+							"colorHint": "blue"
+						}
+					],
+					"sortOrder": 210
+				},
+				{
+					"id": "impact_meetings_example",
+					"parentId": "section_impact_key_situations",
+					"kind": "question",
+					"label": "1.2 Specific example from my role:",
+					"answerType": "textarea",
+					"required": true,
+					"sortOrder": 220
+				},
+				{
+					"id": "impact_conflict_radio",
+					"parentId": "section_impact_key_situations",
+					"kind": "question",
+					"label": "2.1 In Conflict, I tend to:",
+					"answerType": "radio",
+					"required": true,
+					"options": [
+						{
+							"id": "conflict_red",
+							"label": "Be too direct / confrontational (Red)",
+							"colorHint": "red"
+						},
+						{
+							"id": "conflict_yellow",
+							"label": "Avoid or deflect (Yellow)",
+							"colorHint": "yellow"
+						},
+						{
+							"id": "conflict_green",
+							"label": "Avoid or withdraw (Green)",
+							"colorHint": "green"
+						},
+						{
+							"id": "conflict_blue",
+							"label": "Focus on facts, not people (Blue)",
+							"colorHint": "blue"
+						}
+					],
+					"sortOrder": 230
+				},
+				{
+					"id": "impact_conflict_example",
+					"parentId": "section_impact_key_situations",
+					"kind": "question",
+					"label": "2.2 What this looks like in reality:",
+					"answerType": "textarea",
+					"required": true,
+					"sortOrder": 240
+				},
+				{
+					"id": "impact_decision_radio",
+					"parentId": "section_impact_key_situations",
+					"kind": "question",
+					"label": "3.1 In Decision-Making, I tend to:",
+					"answerType": "radio",
+					"required": true,
+					"options": [
+						{
+							"id": "decision_red",
+							"label": "Rush decisions (Red)",
+							"colorHint": "red"
+						},
+						{
+							"id": "decision_yellow",
+							"label": "Change direction often (Yellow)",
+							"colorHint": "yellow"
+						},
+						{
+							"id": "decision_green",
+							"label": "Delay for alignment (Green)",
+							"colorHint": "green"
+						},
+						{
+							"id": "decision_blue",
+							"label": "Delay for more data (Blue)",
+							"colorHint": "blue"
+						}
+					],
+					"sortOrder": 250
+				},
+				{
+					"id": "impact_decision_experience",
+					"parentId": "section_impact_key_situations",
+					"kind": "question",
+					"label": "3.2 What experience has shown me:",
+					"answerType": "textarea",
+					"required": true,
+					"sortOrder": 260
+				},
+				{
+					"id": "section_impact_of_others",
+					"kind": "section",
+					"title": "THE IMPACT OF OTHERS ON ME",
+					"sortOrder": 300
+				},
+				{
+					"id": "impact_others_more",
+					"parentId": "section_impact_of_others",
+					"kind": "question",
+					"label": "1. What I FEEL I need MORE of from others:",
+					"answerType": "textarea",
+					"required": true,
+					"sortOrder": 310
+				},
+				{
+					"id": "impact_others_less",
+					"parentId": "section_impact_of_others",
+					"kind": "question",
+					"label": "2. What I FEEL I need LESS of from others:",
+					"answerType": "textarea",
+					"required": true,
+					"sortOrder": 320
+				},
+				{
+					"id": "section_what_can_i_bring",
+					"kind": "section",
+					"title": "WHAT CAN I BRING?",
+					"sortOrder": 400
+				},
+				{
+					"id": "what_can_i_bring_more",
+					"parentId": "section_what_can_i_bring",
+					"kind": "question",
+					"label": "1. What I FEEL I need to do MORE for others:",
+					"answerType": "textarea",
+					"required": true,
+					"sortOrder": 410
+				},
+				{
+					"id": "what_can_i_bring_less",
+					"parentId": "section_what_can_i_bring",
+					"kind": "question",
+					"label": "2. What I FEEL I need to do LESS for others:",
+					"answerType": "textarea",
+					"required": true,
+					"sortOrder": 420
+				}
+			]
+		}
+	]
+}
