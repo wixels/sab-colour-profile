@@ -5,12 +5,15 @@
   "scripts": {
     "dev": "next dev --port 3001",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "import:questions": "node ./scripts/import-questions.mjs"
   },
   "dependencies": {
     "@sab-colour-profile/backend": "workspace:*",
     "@sab-colour-profile/env": "workspace:*",
     "@sab-colour-profile/ui": "workspace:*",
+    "@tanstack/react-form": "^1.29.1",
+    "@tanstack/react-table": "^8.21.3",
     "babel-plugin-react-compiler": "^1.0.0",
     "convex": "catalog:",
     "dotenv": "catalog:",
@@ -20,6 +23,7 @@
     "react": "catalog:",
     "react-dom": "catalog:",
     "sonner": "catalog:",
+    "xlsx": "^0.18.5",
     "zod": "catalog:"
   },
   "devDependencies": {

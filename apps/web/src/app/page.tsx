@@ -1,46 +1,46 @@
 "use client";
 import { api } from "@sab-colour-profile/backend/convex/_generated/api";
+import { buttonVariants } from "@sab-colour-profile/ui/components/button";
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardHeader,
+	CardTitle,
+} from "@sab-colour-profile/ui/components/card";
+import { cn } from "@sab-colour-profile/ui/lib/utils";
 import { useQuery } from "convex/react";
-
-const TITLE_TEXT = `
- ██████╗ ███████╗████████╗████████╗███████╗██████╗
- ██╔══██╗██╔════╝╚══██╔══╝╚══██╔══╝██╔════╝██╔══██╗
- ██████╔╝█████╗     ██║      ██║   █████╗  ██████╔╝
- ██╔══██╗██╔══╝     ██║      ██║   ██╔══╝  ██╔══██╗
- ██████╔╝███████╗   ██║      ██║   ███████╗██║  ██║
- ╚═════╝ ╚══════╝   ╚═╝      ╚═╝   ╚══════╝╚═╝  ╚═╝
-
- ████████╗    ███████╗████████╗ █████╗  ██████╗██╗  ██╗
- ╚══██╔══╝    ██╔════╝╚══██╔══╝██╔══██╗██╔════╝██║ ██╔╝
-    ██║       ███████╗   ██║   ███████║██║     █████╔╝
-    ██║       ╚════██║   ██║   ██╔══██║██║     ██╔═██╗
-    ██║       ███████║   ██║   ██║  ██║╚██████╗██║  ██╗
-    ╚═╝       ╚══════╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝
- `;
+import Link from "next/link";
 
 export default function Home() {
-  const healthCheck = useQuery(api.healthCheck.get);
+	const healthCheck = useQuery(api.healthCheck.get);
 
-  return (
-    <div className="container mx-auto max-w-3xl px-4 py-2">
-      <pre className="overflow-x-auto font-mono text-sm">{TITLE_TEXT}</pre>
-      <div className="grid gap-6">
-        <section className="rounded-lg border p-4">
-          <h2 className="mb-2 font-medium">API Status</h2>
-          <div className="flex items-center gap-2">
-            <div
-              className={`h-2 w-2 rounded-full ${healthCheck === "OK" ? "bg-green-500" : healthCheck === undefined ? "bg-orange-400" : "bg-red-500"}`}
-            />
-            <span className="text-sm text-muted-foreground">
-              {healthCheck === undefined
-                ? "Checking..."
-                : healthCheck === "OK"
-                  ? "Connected"
-                  : "Error"}
-            </span>
-          </div>
-        </section>
-      </div>
-    </div>
-  );
+	return (
+		<div className="container mx-auto max-w-3xl px-4 py-6">
+			<Card>
+				<CardHeader>
+					<CardTitle>Personality Assessment</CardTitle>
+					<CardDescription>
+						Complete the RGBY questionnaire and review assessment responses.
+					</CardDescription>
+				</CardHeader>
+				<CardContent className="flex flex-col gap-3">
+					<p className="text-muted-foreground">
+						Backend status: {healthCheck ?? "Loading..."}
+					</p>
+					<div className="flex gap-2">
+						<Link href="/start" className={cn(buttonVariants())}>
+							Start Assessment
+						</Link>
+						<Link
+							href="/responses"
+							className={cn(buttonVariants({ variant: "outline" }))}
+						>
+							View Responses
+						</Link>
+					</div>
+				</CardContent>
+			</Card>
+		</div>
+	);
 }
