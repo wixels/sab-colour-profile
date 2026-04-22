@@ -1,0 +1,3 @@
+{
+  "extends": "@sab-colour-profile/config/tsconfig.base.json"
+}

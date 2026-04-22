@@ -1,0 +1,30 @@
+{
+  "name": "sab-colour-profile",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "type": "module",
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "check-types": "turbo check-types",
+    "dev:web": "turbo -F web dev",
+    "dev:server": "turbo -F @sab-colour-profile/backend dev",
+    "dev:setup": "turbo -F @sab-colour-profile/backend dev:setup",
+    "check": "biome check --write ."
+  },
+  "dependencies": {
+    "@sab-colour-profile/env": "workspace:*",
+    "dotenv": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.2.0",
+    "@sab-colour-profile/config": "workspace:*",
+    "turbo": "^2.8.12",
+    "typescript": "catalog:"
+  },
+  "packageManager": "pnpm@10.23.0"
+}
