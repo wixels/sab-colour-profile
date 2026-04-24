@@ -34,11 +34,23 @@ export const loadLocalIdentity = (): LocalIdentity | null => {
 	}
 
 	try {
-		const parsed = JSON.parse(raw) as LocalIdentity;
-		if (!parsed?.personId || !parsed?.emailNormalized) {
+		const parsed = JSON.parse(raw) as
+			| (Partial<LocalIdentity> & { email?: string })
+			| null;
+		if (!parsed?.personId) {
 			return null;
 		}
-		return parsed;
+		const emailNormalized =
+			parsed.emailNormalized ?? parsed.email?.trim().toLowerCase() ?? "";
+		if (!emailNormalized) {
+			return null;
+		}
+		return {
+			personId: parsed.personId,
+			emailNormalized,
+			name: parsed.name ?? "",
+			surname: parsed.surname ?? "",
+		};
 	} catch {
 		return null;
 	}

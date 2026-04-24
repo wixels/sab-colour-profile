@@ -49,7 +49,6 @@ export default function ResponsesPage() {
               red: row.red,
               blue: row.blue,
               yellow: row.yellow,
-              hasReflection: row.hasReflection,
             }))}
             localPersonId={localPersonId}
           />

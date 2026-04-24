@@ -1,5 +1,7 @@
 "use client";
 
+import { api } from "@sab-colour-profile/backend/convex/_generated/api";
+import type { Id } from "@sab-colour-profile/backend/convex/_generated/dataModel";
 import { buttonVariants } from "@sab-colour-profile/ui/components/button";
 import {
   Table,
@@ -16,6 +18,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { cn } from "@sab-colour-profile/ui/lib/utils";
+import { useQuery } from "convex/react";
 import Link from "next/link";
 
 type ResponseRow = {
@@ -26,7 +29,6 @@ type ResponseRow = {
   red: number;
   blue: number;
   yellow: number;
-  hasReflection: boolean;
 };
 
 const COLOUR_KEYS = ["green", "red", "blue", "yellow"] as const;
@@ -117,48 +119,13 @@ export function ResponsesTable({
                 {row.getVisibleCells().map((cell) => {
                   const columnId = cell.column.id;
                   if (columnId === "reflection") {
-                    if (row.original.hasReflection) {
-                      return (
-                        <TableCell key={cell.id}>
-                          <Link
-                            href={`/reflection/${row.original.attemptId}`}
-                            className={cn(
-                              buttonVariants({
-                                size: "sm",
-                                variant: "outline",
-                                className: "rounded-md",
-                              }),
-                            )}
-                          >
-                            See reflection
-                          </Link>
-                        </TableCell>
-                      );
-                    }
-
-                    if (row.original.personId === localPersonId) {
-                      return (
-                        <TableCell key={cell.id}>
-                          <Link
-                            href={`/reflection/${row.original.attemptId}`}
-                            className={cn(
-                              buttonVariants({
-                                size: "sm",
-                                className: "rounded-md",
-                              }),
-                            )}
-                          >
-                            Start reflection
-                          </Link>
-                        </TableCell>
-                      );
-                    }
-
                     return (
                       <TableCell key={cell.id}>
-                        <span className="text-muted-foreground text-sm">
-                          Not available
-                        </span>
+                        <ReflectionCell
+                          attemptId={row.original.attemptId}
+                          personId={row.original.personId}
+                          localPersonId={localPersonId}
+                        />
                       </TableCell>
                     );
                   }
@@ -186,4 +153,58 @@ export function ResponsesTable({
       </TableBody>
     </Table>
   );
+}
+
+function ReflectionCell({
+  attemptId,
+  personId,
+  localPersonId,
+}: {
+  attemptId: string;
+  personId: string;
+  localPersonId: string | null;
+}) {
+  const payload = useQuery(api.postAssessments.getDefinitionWithResponseForAttempt, {
+    attemptId: attemptId as Id<"attempts">,
+    definitionKey: "reflection",
+  });
+
+  if (payload === undefined) {
+    return <span className="text-muted-foreground text-sm">Loading...</span>;
+  }
+
+  if (payload.response) {
+    return (
+      <Link
+        href={`/reflection/${attemptId}`}
+        className={cn(
+          buttonVariants({
+            size: "sm",
+            variant: "outline",
+            className: "rounded-md",
+          }),
+        )}
+      >
+        See reflection
+      </Link>
+    );
+  }
+
+  if (personId === localPersonId) {
+    return (
+      <Link
+        href={`/reflection/${attemptId}`}
+        className={cn(
+          buttonVariants({
+            size: "sm",
+            className: "rounded-md",
+          }),
+        )}
+      >
+        Start reflection
+      </Link>
+    );
+  }
+
+  return <span className="text-muted-foreground text-sm">Not available</span>;
 }

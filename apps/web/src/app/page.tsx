@@ -8,12 +8,19 @@ import {
   CardTitle,
 } from "@sab-colour-profile/ui/components/card";
 import { useQuery } from "convex/react";
+import { useEffect, useState } from "react";
 import { HeroHeader } from "@/components/header";
 import HeroSection from "@/components/hero-section-2";
 import { ResponsesTable } from "@/components/responses-table";
+import { loadLocalIdentity } from "@/lib/local-identity";
 
 export default function Home() {
   const rows = useQuery(api.reporting.listLatestScoresByPerson);
+  const [localPersonId, setLocalPersonId] = useState<string | null>(null);
+
+  useEffect(() => {
+    setLocalPersonId(loadLocalIdentity()?.personId ?? null);
+  }, []);
 
   if (!rows) {
     return (
@@ -41,12 +48,14 @@ export default function Home() {
             <ResponsesTable
               rows={rows.map((row) => ({
                 personId: row.personId,
+                attemptId: row.attemptId,
                 fullName: row.fullName,
                 green: row.green,
                 red: row.red,
                 blue: row.blue,
                 yellow: row.yellow,
               }))}
+              localPersonId={localPersonId}
             />
           </CardContent>
         </Card>
