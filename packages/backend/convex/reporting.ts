@@ -1,4 +1,5 @@
 import { v } from "convex/values";
+import type { Id } from "./_generated/dataModel";
 import { query } from "./_generated/server";
 
 export const listLatestScoresByPerson = query({
@@ -6,6 +7,7 @@ export const listLatestScoresByPerson = query({
 	returns: v.array(
 		v.object({
 			personId: v.id("people"),
+			attemptId: v.id("attempts"),
 			name: v.string(),
 			surname: v.string(),
 			fullName: v.string(),
@@ -14,12 +16,18 @@ export const listLatestScoresByPerson = query({
 			blue: v.number(),
 			yellow: v.number(),
 			completedAt: v.number(),
+			hasReflection: v.boolean(),
 		}),
 	),
 	handler: async (ctx) => {
+		const reflectionDefinition = await ctx.db
+			.query("postAssessmentDefinitions")
+			.withIndex("by_key", (q) => q.eq("key", "reflection"))
+			.unique();
 		const people = await ctx.db.query("people").take(500);
 		const rows: Array<{
-			personId: (typeof people)[number]["_id"];
+			personId: Id<"people">;
+			attemptId: Id<"attempts">;
 			name: string;
 			surname: string;
 			fullName: string;
@@ -28,6 +36,7 @@ export const listLatestScoresByPerson = query({
 			blue: number;
 			yellow: number;
 			completedAt: number;
+			hasReflection: boolean;
 		}> = [];
 
 		for (const person of people) {
@@ -44,8 +53,21 @@ export const listLatestScoresByPerson = query({
 			}
 
 			const attempt = latestAttempt[0];
+			const reflectionResponse =
+				reflectionDefinition === null
+					? null
+					: await ctx.db
+							.query("postAssessmentResponses")
+							.withIndex("by_attemptId_and_definitionId", (q) =>
+								q
+									.eq("attemptId", attempt._id)
+									.eq("definitionId", reflectionDefinition._id),
+							)
+							.unique();
+
 			rows.push({
 				personId: person._id,
+				attemptId: attempt._id,
 				name: person.name,
 				surname: person.surname,
 				fullName: `${person.name} ${person.surname}`.trim(),
@@ -54,6 +76,7 @@ export const listLatestScoresByPerson = query({
 				blue: attempt.scores.blue,
 				yellow: attempt.scores.yellow,
 				completedAt: attempt.completedAt,
+				hasReflection: reflectionResponse !== null,
 			});
 		}
 

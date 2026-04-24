@@ -1,46 +1,56 @@
 "use client";
 import { api } from "@sab-colour-profile/backend/convex/_generated/api";
-import { buttonVariants } from "@sab-colour-profile/ui/components/button";
 import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
 } from "@sab-colour-profile/ui/components/card";
-import { cn } from "@sab-colour-profile/ui/lib/utils";
 import { useQuery } from "convex/react";
-import Link from "next/link";
+import { HeroHeader } from "@/components/header";
+import HeroSection from "@/components/hero-section-2";
+import { ResponsesTable } from "@/components/responses-table";
 
 export default function Home() {
-	const healthCheck = useQuery(api.healthCheck.get);
+  const rows = useQuery(api.reporting.listLatestScoresByPerson);
 
-	return (
-		<div className="container mx-auto max-w-3xl px-4 py-6">
-			<Card>
-				<CardHeader>
-					<CardTitle>Personality Assessment</CardTitle>
-					<CardDescription>
-						Complete the RGBY questionnaire and review assessment responses.
-					</CardDescription>
-				</CardHeader>
-				<CardContent className="flex flex-col gap-3">
-					<p className="text-muted-foreground">
-						Backend status: {healthCheck ?? "Loading..."}
-					</p>
-					<div className="flex gap-2">
-						<Link href="/start" className={cn(buttonVariants())}>
-							Start Assessment
-						</Link>
-						<Link
-							href="/responses"
-							className={cn(buttonVariants({ variant: "outline" }))}
-						>
-							View Responses
-						</Link>
-					</div>
-				</CardContent>
-			</Card>
-		</div>
-	);
+  if (!rows) {
+    return (
+      <div className="container mx-auto max-w-5xl px-4 py-6">
+        <Card>
+          <CardContent className="pt-4">Loading responses...</CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  return (
+    <>
+      <HeroHeader />
+      <HeroSection />
+      <div id="responses" className="container mx-auto max-w-5xl px-4 py-6">
+        <Card className="rounded-lg">
+          <CardHeader>
+            <CardTitle>Assessment Responses</CardTitle>
+            <CardDescription>
+              Latest RGBY score for each person.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ResponsesTable
+              rows={rows.map((row) => ({
+                personId: row.personId,
+                fullName: row.fullName,
+                green: row.green,
+                red: row.red,
+                blue: row.blue,
+                yellow: row.yellow,
+              }))}
+            />
+          </CardContent>
+        </Card>
+      </div>
+    </>
+  );
 }
