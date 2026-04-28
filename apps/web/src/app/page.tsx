@@ -36,7 +36,7 @@ export default function Home() {
     <>
       <HeroHeader />
       <HeroSection />
-      <div id="responses" className="container mx-auto max-w-5xl px-4 py-6">
+      {/* <div id="responses" className="container mx-auto max-w-5xl px-4 py-6">
         <Card className="rounded-lg">
           <CardHeader>
             <CardTitle>Assessment Responses</CardTitle>
@@ -59,7 +59,7 @@ export default function Home() {
             />
           </CardContent>
         </Card>
-      </div>
+      </div> */}
     </>
   );
 }
