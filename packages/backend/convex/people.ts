@@ -15,7 +15,7 @@ export const upsertByEmail = mutation({
 		name: v.string(),
 		surname: v.string(),
 		email: v.string(),
-		group: v.union(v.literal("Tax Summit"), v.literal("Sales Manager Academy")),
+		group: v.string(),
 	},
 	returns: personValidator,
 	handler: async (ctx, args) => {
