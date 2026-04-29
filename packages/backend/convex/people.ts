@@ -7,6 +7,7 @@ const personValidator = v.object({
 	surname: v.string(),
 	email: v.string(),
 	emailNormalized: v.string(),
+	group: v.string(),
 });
 
 export const upsertByEmail = mutation({
@@ -14,6 +15,7 @@ export const upsertByEmail = mutation({
 		name: v.string(),
 		surname: v.string(),
 		email: v.string(),
+		group: v.union(v.literal("Tax Summit"), v.literal("Sales Manager Academy")),
 	},
 	returns: personValidator,
 	handler: async (ctx, args) => {
@@ -32,6 +34,7 @@ export const upsertByEmail = mutation({
 				name: args.name.trim(),
 				surname: args.surname.trim(),
 				email: args.email.trim(),
+				group: args.group,
 				lastSeenAt: now,
 			});
 
@@ -41,6 +44,7 @@ export const upsertByEmail = mutation({
 				surname: args.surname.trim(),
 				email: args.email.trim(),
 				emailNormalized,
+				group: args.group,
 			};
 		}
 
@@ -49,6 +53,7 @@ export const upsertByEmail = mutation({
 			surname: args.surname.trim(),
 			email: args.email.trim(),
 			emailNormalized,
+			group: args.group,
 			lastSeenAt: now,
 		});
 
@@ -58,6 +63,7 @@ export const upsertByEmail = mutation({
 			surname: args.surname.trim(),
 			email: args.email.trim(),
 			emailNormalized,
+			group: args.group,
 		};
 	},
 });

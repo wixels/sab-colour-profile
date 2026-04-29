@@ -6,6 +6,7 @@ export type LocalIdentity = {
 	emailNormalized: string;
 	name: string;
 	surname: string;
+	group: string;
 };
 
 export type AssessmentDraft = {
@@ -50,6 +51,7 @@ export const loadLocalIdentity = (): LocalIdentity | null => {
 			emailNormalized,
 			name: parsed.name ?? "",
 			surname: parsed.surname ?? "",
+			group: parsed.group ?? "",
 		};
 	} catch {
 		return null;

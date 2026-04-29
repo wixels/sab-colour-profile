@@ -20,6 +20,10 @@ import {
   FieldLabel,
 } from "@sab-colour-profile/ui/components/field";
 import { Input } from "@sab-colour-profile/ui/components/input";
+import {
+  NativeSelect,
+  NativeSelectOption,
+} from "@sab-colour-profile/ui/components/native-select";
 import { cn } from "@sab-colour-profile/ui/lib/utils";
 import { useForm } from "@tanstack/react-form";
 import { useMutation, useQuery } from "convex/react";
@@ -97,6 +101,7 @@ export default function StartPage() {
       name: "",
       surname: "",
       email: "",
+      group: "Tax Summit",
     },
     onSubmit: async ({ value }) => {
       const person = await upsertByEmail(value);
@@ -115,6 +120,7 @@ export default function StartPage() {
     form.setFieldValue("name", existingIdentity.name);
     form.setFieldValue("surname", existingIdentity.surname);
     form.setFieldValue("email", existingIdentity.emailNormalized);
+    form.setFieldValue("group", existingIdentity.group || "Tax Summit");
     setIdentity(existingIdentity);
   }, [form]);
 
@@ -189,6 +195,38 @@ export default function StartPage() {
                       }
                       className="rounded-md"
                     />
+                    <FieldError
+                      errors={toFieldErrors(field.state.meta.errors)}
+                    />
+                  </Field>
+                )}
+              </form.Field>
+
+              <form.Field
+                name="group"
+                validators={{ onChange: ({ value }) => requiredText(value) }}
+              >
+                {(field) => (
+                  <Field data-invalid={field.state.meta.errors.length > 0}>
+                    <FieldLabel htmlFor={field.name}>Group</FieldLabel>
+                    <NativeSelect
+                      id={field.name}
+                      name={field.name}
+                      value={field.state.value}
+                      aria-invalid={field.state.meta.errors.length > 0}
+                      onBlur={field.handleBlur}
+                      onChange={(event) =>
+                        field.handleChange(event.target.value)
+                      }
+                      className="w-full rounded-md"
+                    >
+                      <NativeSelectOption value="Tax Summit">
+                        Tax Summit
+                      </NativeSelectOption>
+                      <NativeSelectOption value="Sales Manager Academy">
+                        Sales Manager Academy
+                      </NativeSelectOption>
+                    </NativeSelect>
                     <FieldError
                       errors={toFieldErrors(field.state.meta.errors)}
                     />

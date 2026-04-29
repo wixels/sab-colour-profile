@@ -8,6 +8,11 @@ const assessmentColor = v.union(
 	v.literal("yellow"),
 );
 
+const personGroup = v.union(
+	v.literal("Tax Summit"),
+	v.literal("Sales Manager Academy"),
+);
+
 const postAssessmentNode = v.union(
 	v.object({
 		id: v.string(),
@@ -70,6 +75,7 @@ export default defineSchema({
 		surname: v.string(),
 		email: v.string(),
 		emailNormalized: v.string(),
+		group: v.optional(personGroup),
 		lastSeenAt: v.number(),
 	})
 		.index("by_emailNormalized", ["emailNormalized"])
