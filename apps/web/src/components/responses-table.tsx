@@ -25,6 +25,7 @@ type ResponseRow = {
   personId: string;
   attemptId: string;
   fullName: string;
+  group?: string;
   green: number;
   red: number;
   blue: number;
@@ -49,6 +50,14 @@ const columns: Array<ColumnDef<ResponseRow>> = [
   {
     accessorKey: "fullName",
     header: "Name",
+  },
+  {
+    accessorKey: "group",
+    header: "Group",
+    cell: ({ row }) => {
+      const group = row.original.group?.trim();
+      return group ? group : "-";
+    },
   },
   {
     accessorKey: "green",
